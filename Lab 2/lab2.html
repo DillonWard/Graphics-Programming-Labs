@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Lab2</title>
+
+	<!-- Setting the canvas/border -->
+    <style type="text/css">
+      body {
+          background-color: white;
+      }
+	  
+	    canvas {
+		border-style: dashed;
+		border-width: 2px;
+		
+	}
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne" height="500" width = "500"></canvas>
+
+    <script type="text/javascript">
+      // Gets a handle to the element with id canvasOne.
+       var canvas = document.getElementById("canvasOne");
+
+      // Set the canvas up for drawing in 2D.
+      var ctx = canvas.getContext("2d");
+
+	  	  // Initializes the circles position and size on the canvas
+		var circle = {
+			xpos: 150,
+			ypos: 150,
+			radius: 120,
+			
+			// Move the circle by adding new x/y positions through the console
+			move: function(newX, newY){
+				this.xpos = this.xpos + newX,
+				this.ypos = this.ypos + newY;
+				console.log("Xpos " + this.xpos + " - Ypos " + this.ypos); // new x/y position is printed to the console
+				circle.draw(); // redraw the circle to the canvas
+
+
+			  },
+			// Resize the circle on the canvas by changing the radius
+			resize: function(newRadius){
+				this.radius = newRadius; // add a new radius 
+				circle.draw(); // redraw the circle to the canvas
+
+			},
+			
+			draw: function(){
+				ctx.beginPath(); // initialize the circle
+				ctx.fillStyle = "rgb(255, 214, 153)"; // the color of the circle
+				ctx.arc(this.xpos, this.ypos, this.radius, 0, 1.75 * Math.PI, false); // draw a circle starting from 0 to 1.75, not a full circle
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // draw the outline
+				ctx.fill(); // fill with color
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.fillStyle = "rgb(255, 255, 128)"; // color of the circle 
+				ctx.arc(this.xpos, this.ypos, this.radius - this.radius*.10, 0, 1.75 * Math.PI, false); // draw a circle starting from 0 to 1.75, not a full circle 
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				ctx.fill(); // fill with color
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(0.25 * Math.PI)),  this.ypos + (this.radius * Math.sin(0.25 * Math.PI))); // draw a line at a certain angle			
+				ctx.lineTo(this.xpos, this.ypos);
+				ctx.stroke(); // outline 
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(0.50 * Math.PI)),  this.ypos + (this.radius * Math.sin(0.50 * Math.PI))); // draw a line at a certain angle			
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(0.75 * Math.PI)),  this.ypos + (this.radius * Math.sin(0.75 * Math.PI))); // draw a line at a certain angle				
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(1 * Math.PI)),  this.ypos + (this.radius * Math.sin(1 * Math.PI))); // draw a line at a certain angle					
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				 
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(1.25 * Math.PI)),  this.ypos + (this.radius * Math.sin(1.25 * Math.PI))); // draw a line at a certain angle					
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				 
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(1.50 * Math.PI)),  this.ypos + (this.radius * Math.sin(1.50 * Math.PI))); // draw a line at a certain angle					
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(1.75 * Math.PI)),  this.ypos + (this.radius * Math.sin(1.75 * Math.PI))); // draw a line at a certain angle					
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				
+				ctx.beginPath(); // initialize the circle 
+				ctx.moveTo(this.xpos + (this.radius * Math.cos(2 * Math.PI)),  this.ypos + (this.radius * Math.sin(2 * Math.PI))); // draw a line at a certain angle					
+				ctx.lineTo(this.xpos, this.ypos); // draw the line to the center of the circle
+				ctx.stroke(); // outline 
+				
+			
+			}
+			
+		}
+			
+		// draw the circle to the canvas
+		circle.draw();
+    </script>
+
+  </body>
+
+</html>

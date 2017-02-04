@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<title>Transformations</title>
+		<meta charset="UTF-8">
+			<style type="text/css">
+			
+			body {
+			background-color: white;
+			}
+			
+			canvas {
+			border-style: solid;
+			border-width: 2px;
+			}			  
+	</style>	
+	</head>
+
+	<body>
+    <canvas id="transcan">
+	
+	</canvas>
+
+		<script type="text/javascript">
+			
+		var canvas = document.getElementById('transcan');
+		var ctx = canvas.getContext('2d');
+		var size = 25;
+		var xpos = 0;
+		var ypos = 0;
+		var eye = 5;
+		var noSteps = 0;
+		canvas.width = 500;
+		canvas.height = 500;
+		var sin = Math.sin((Math.PI/ 180) * 90); // for rotating the pacman
+		var cos = Math.cos((Math.PI/180) * 90); // for rotating the pacman
+		
+		
+		function drawPacman(size){	
+			ctx.beginPath(); // initialize the circle
+			ctx.fillStyle = "rgb(255,255,0)"; // the color of the circle
+			ctx.arc(xpos, ypos, size, 0, 1.75 * Math.PI, false); // draw a circle starting from 0 to 1.75, not a full circle
+			ctx.lineTo(xpos, ypos); // draw the line to the center of the circle
+			ctx.stroke(); // draw the outline
+			ctx.fill(); // fill with color
+			ctx.moveTo(xpos + (size * Math.cos(2 * Math.PI)),  ypos + (size * Math.sin(2 * Math.PI))); // draw a line at a certain angle					
+			ctx.lineTo(xpos, ypos); // draw the line to the center of the circle
+			ctx.stroke(); // outline
+
+			// draws circle 
+			ctx.beginPath();
+			ctx.fillStyle = "black";
+			ctx.arc(xpos - 10, ypos - 10, eye, 0, 2 * Math.PI);
+			ctx.fill();	
+
+		}
+		
+		function clear() {	
+		 ctx.save();
+		 ctx.setTransform(1, 0, 0, 1, 0, 0);
+		 ctx.clearRect(0, 0, canvas.width, canvas.height);
+		 ctx.restore();
+		 // clear the canvas and restore for repainting
+		}
+		
+		
+		function repeatme() {
+			clear();
+			
+			drawPacman(size);
+			noSteps += 1;
+			console.log(noSteps);
+			ctx.transform(1, 0, 0, 1, 1, ypos);
+			
+			 if(noSteps === 400){
+				noSteps = 0;
+				ctx.transform(cos, sin, -sin, cos, 0, 0);
+			}
+			
+			window.requestAnimationFrame(repeatme); // Get the animation going.
+		}		
+
+		
+		ctx.translate(30,30);
+		repeatme();
+ 
+	 </script>
+	 </body>
+</html>

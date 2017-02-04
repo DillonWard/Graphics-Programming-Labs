@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Lab 5</title>
+
+    <style type="text/css">
+		canvas {
+			border: 1px solid grey; 
+		}
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball"></canvas>
+
+    <script type="text/javascript">
+		// Gets a handle to the element with id canvas-for-ball.
+		var canvas = document.getElementById("canvas-for-ball");
+		// Get a 2D context for the canvas.
+		var ctx = canvas.getContext("2d");
+		
+		function Ball(x, y, r, vx, vy, mass){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.vx = vx;
+			this.vy = vy;
+			this.mass = mass;
+			// dimensions for the ball
+			
+			this.draw = function(){
+				ctx.beginPath();
+				ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+				ctx.lineWidth = 3;
+				ctx.stroke();
+			}// draws the ball
+			this.resize = function(){
+				this.r = radius;
+			} // allows for the ball to be resized
+			
+			this.move = function(){
+				if(this.y > canvas.height - this.r || this.y < this.r){
+					this.vy = -this.vy;
+				}
+				this.y += this.vy;
+				
+				if(this.x > canvas.width - this.r || this.x < this.r){
+					this.vx = -this.vx;
+				}
+				this.x += this.vx;
+			} // collision against the wall
+			
+		}
+		
+		var ballOne = new Ball(100, 100, 15, 5, 6, 10);
+		var ballTwo = new Ball(200, 300, 15, 3, 3, 10);
+		
+			
+			
+		var canvasPosition = {
+			x: left = canvas.offsetLeft,
+			y: topPos = canvas.offsetTop
+		};		
+		
+		// Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			// Just log the event to the console.
+			console.log(event);
+		});
+
+		//keypresses with jQuery
+		$(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			// key code for left arrow
+			case 37:
+				console.log('Left arrow key pressed!');
+				ballOne.vx -= 1;
+				break;
+				
+			case 38:
+				console.log('Up arrow key pressed!');
+				ballOne.vy -= 1;
+				break;
+
+			// key code for right arrow
+			case 39:
+				console.log('Right arrow key pressed!');
+				ballOne.vx += 1;
+				break;
+				
+			case 40:
+				console.log('down arrow key pressed!');
+				ballOne.vy += 1;
+				
+				break;
+			}
+			console.log("x - %d", ballOne.vx)
+
+		});							
+		
+		function repeatme() {
+			// Draw the ball (stroked, not filled).
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			// Get the animation going.
+			ballOne.draw();
+			ballOne.move();
+			
+			ballTwo.draw();
+			detect();
+			ballTwo.move();
+			window.requestAnimationFrame(repeatme);
+		}
+		
+		function init(){
+			canvas.width = 400;
+			canvas.height = 400;	
+		}
+		
+		function detect(){
+			var powOne = Math.pow(ballTwo.x - ballOne.x,2);
+			var powTwo = Math.pow(ballTwo.y - ballOne.y,2);
+			var dist = Math.sqrt(powOne - powTwo);		
+			
+			if(dist < ballOne.r+ballTwo.r){
+				console.log("Collision detected!");
+				//One collision is detected handle the collision
+				var dx = ballOne.x - ballTwo.x; // calculate horizontal distance between balls
+				var dy = ballOne.y - ballTwo.y; // calculate vertical distance between balls
+				// calculate the ball1 speed, here called the Magnitude
+				var collisionAngle = Math.atan2(dy, dx);
+				// calculate the ball2 speed in the same way
+				var magnitudeOne = Math.sqrt(ballOne.vx * ballOne.vx + ballOne.vy * ballOne.vy);                                    
+				var magnitudeTwo = Math.sqrt(ballTwo.vx * ballTwo.vx + ballTwo.vy * ballTwo.vy);
+				// determine the balls' direction
+				var directionOne = Math.atan2(ballOne.vy, ballOne.vx);
+				var directionTwo = Math.atan2(ballTwo.vy, ballTwo.vx);
+				// calculate new x/y velocity
+				var newVXOne = magnitudeOne * Math.cos(directionOne - collisionAngle);
+				var newVYOne = magnitudeOne * Math.sin(directionOne - collisionAngle);
+				// calculate new x/y velocity
+				var newVXTwo = magnitudeTwo * Math.cos(directionTwo - collisionAngle);
+				var newVYTwo = magnitudeTwo * Math.sin(directionTwo - collisionAngle);
+				// determine final x speed for ball 1/2
+				var finalXVelOne = ((ballOne.mass - ballTwo.mass) * newVXOne + (ballTwo.mass + ballTwo.mass) * newVXTwo)/(ballOne.mass + ballTwo.mass);
+				var finalXVelTwo = ((ballOne.mass - ballOne.mass) * newVXOne + (ballTwo.mass + ballOne.mass) * newVXTwo)/(ballOne.mass + ballTwo.mass);
+				// speed does not change
+				var finalYVOne = newVYOne;
+				var finalYVTwo = newVYTwo;
+				// determine x and y speeds on the original axis system
+				ballOne.vx = Math.cos(collisionAngle) * finalXVelOne + Math.cos(collisionAngle + Math.PI / 2) * finalYVOne;
+				ballOne.vy = Math.sin(collisionAngle) * finalXVelOne + Math.sin(collisionAngle + Math.PI / 2) * finalYVOne;
+				ballTwo.vx = Math.cos(collisionAngle) * finalXVelTwo + Math.cos(collisionAngle + Math.PI / 2) * finalYVTwo;
+				ballTwo.vy = Math.sin(collisionAngle) * finalXVelTwo + Math.sin(collisionAngle + Math.PI / 2) * finalYVTwo;
+			
+			}			
+		}
+			  
+		init();
+		repeatme();
+	
+    </script>
+
+  </body>
+
+</html>

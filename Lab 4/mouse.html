@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+      canvas {
+        border: 1px solid grey; 
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball"></canvas>
+
+    <script type="text/javascript">
+      var noClicks = 0;
+	  
+      
+      // Gets a handle to the element with id canvas-for-ball.
+      var canvas = document.getElementById("canvas-for-ball");
+      // Get a 2D context for the canvas.
+      var ctx = canvas.getContext("2d");
+      
+	  var ball = {
+		r: 6,
+		vx: 1,
+		vy: 1	
+		}// ball radius and velocity 
+      	  
+	  var canvasPosition = {
+		x: left = canvas.offsetLeft,
+		y: topPos = canvas.offsetTop
+	  }; // xposition and yposition for the canvas
+	  
+      canvas.addEventListener("click", function(event) { // event listener for when something happens
+	
+		var mouse = {
+		x: event.pageX - canvasPosition.x,
+		y: event.pageY - canvasPosition.y
+		} // variable for the mouses x and y pos
+	  
+		// draws circle 
+        ctx.beginPath();
+		ctx.fillStyle = "red";
+		ctx.clearRect(0, 0, canvas.width, canvas.height); 
+        ctx.arc(mouse.x, mouse.y, ball.r, 0, 2 * Math.PI); // paints to where the mouse clicks - x and y pos
+        ctx.fill(); 
+		
+        // increases number of clicks
+        noClicks += 1;
+        console.log(noClicks);
+		
+      });	  
+	  
+	  canvas.width = 400;
+	  canvas.height = 400;
+    </script>
+
+  </body>
+
+</html>

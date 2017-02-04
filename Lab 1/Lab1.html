@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+      body {
+          background-color: white;
+      }
+	  
+	  canvas {
+		border-style: dashed;
+		border-width: 2px;
+	}
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvasOne">
+	
+	</canvas>
+
+    <script type="text/javascript">
+		// Gets a handle to the element with id canvasOne.
+		var canvas = document.getElementById("canvasOne");
+		canvas.width = 500;
+		canvas.height = 500;
+		var timer;
+		// Set the canvas up for drawing in 2D.
+		var ctx = canvas.getContext("2d");
+		// Set the fill colour to blue.
+		ctx.fillStyle = "rgb(70,130,180)";
+		// Create a filled rectangle at co-ordinates (10,10)
+		// with height and width set to 100.
+		ctx.fillRect(10, 10, 200, 100);
+
+		// Set the fill colour to red and transparent.
+		ctx.fillStyle = "rgba(255,0,0,0.6)";
+		// with height and width set to 100.
+		ctx.fillRect(40, 40, 200, 100);
+
+		// Set the fill colour to red.
+		ctx.fillStyle = "rgb(255,0,0)";
+		// with height and width set to 100.
+		ctx.fillRect(60,60, 200, 100);
+
+		// Set the fill colour to red.
+		ctx.fillStyle = "rgb(255,0,0)";
+		// with height and width set to 110.
+		ctx.fillRect(345,245, 110, 110);
+
+		ctx.arc(400,300,54,0,2*Math.PI); // draw circle
+		ctx.fillStyle = "rgb(70,130,180)"; // color
+		ctx.fill(); // fill with color
+		ctx.stroke(); // outline
+
+		
+
+		ctx.beginPath(); // initialize the circle
+		ctx.fillStyle = "rgb(255,255,0)"; // the color of the circle
+		ctx.arc(100, 300, 50, 0, 1.75 * Math.PI, false); // draw a circle starting from 0 to 1.75, not a full circle
+		ctx.lineTo(100, 300); // draw the line to the center of the circle
+		ctx.stroke(); // draw the outline
+		ctx.fill(); // fill with color
+
+		ctx.beginPath(); // initialize the circle 
+		ctx.moveTo(100 + (50 * Math.cos(2 * Math.PI)),  300 + (50 * Math.sin(2 * Math.PI))); // draw a line at a certain angle					
+		ctx.lineTo(100, 300); // draw the line to the center of the circle
+		ctx.stroke(); // outline 
+
+		ctx.beginPath(); // initialize the circle
+		ctx.fillStyle = "rgb(0,0,0)"; // the color of the circle
+		ctx.arc(100, 270, 10, 0, 2 * Math.PI, false); // draw a circle starting from 0 to 1.75, not a full circle
+		ctx.stroke(); // draw the outline
+		ctx.fill(); // fill with color
+		
+		
+		var circle={
+		
+		xpos: 280,
+		ypos: 300,
+		radius: 50,
+		
+			 draw: function(){
+				ctx.beginPath();
+				ctx.arc(this.xpos,this.ypos,this.radius,0,2*Math.PI); // draw circle
+				ctx.fillStyle = "rgb(255,0,0)"; // color
+				ctx.fill(); // fill with color
+				ctx.stroke(); // outline			
+			}	
+		}
+	
+		function animCircle(){
+			circle.draw();
+			var timer = setTimeout(animCircle, 3000);				
+			circle.xpos = circle.xpos + 50;
+			//window.clearInterval(timer);
+			
+		}
+		window.requestAnimationFrame(animCircle);
+		
+				
+
+    </script>
+  </body>
+
+</html>

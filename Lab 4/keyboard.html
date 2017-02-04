@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Canvas</title>
+
+    <style type="text/css">
+		canvas {
+			border: 1px solid grey; 
+		}
+    </style>
+
+  </head>
+
+  <body>
+
+    <canvas id="canvas-for-ball"></canvas>
+
+    <script type="text/javascript">
+		
+		var noClicks = 0;
+		// Gets a handle to the element with id canvas-for-ball.
+		var canvas = document.getElementById("canvas-for-ball");
+		// Get a 2D context for the canvas.
+		var ctx = canvas.getContext("2d");
+		// Make the fill style red.
+		ctx.fillStyle = "rgb(255, 0, 0)";
+		
+		var ball = {
+			r: 15,
+			vx: 1,
+			vy: 1,
+			x: 0,
+			y: 0,
+			// Dimensions set for ball
+		
+			draw: function(){ // draw the ball
+			ctx.beginPath(); // initialize the circle
+			ctx.fillStyle = "rgb(255, 0, 0)"; // the color of the circle
+			ctx.arc(ball.x, ball.y, this.r, 0, 2 * Math.PI, false); // draw a circle starting from 0 to 1.75, not a full circle
+			ctx.stroke(); // draw the outline
+			ctx.fill(); // fill with color
+			},
+			
+			
+			move: function(){
+			// if the ball hits the wall, the velocity is either up or down
+			// depending on where the ball is
+			if(this.y > canvas.height - this.r || this.y < this.r){
+				this.vy = -this.vy;
+			}
+			this.y += this.vy;
+			
+			if(this.x > canvas.width - this.r || this.x < this.r){
+				this.vx = -this.vx;
+			}
+			this.x += this.vx;
+			}
+			
+		}		
+		
+		// Add a Javascript event listener to the keypress event.
+		window.addEventListener("keypress", function(event) { 
+			// Just log the event to the console.
+			console.log(event);
+		});
+
+		//keypresses with jQuery
+		$(document.body).on('keydown', function(e) {
+			console.log(e.which);
+			switch (e.which) {
+			// key code for left arrow
+			case 37:
+				console.log('Left arrow key pressed!');
+				ball.vx -= 1; // move the ball left 
+				break;
+				
+			// key code for the up arrow
+			case 38:
+				console.log('Up arrow key pressed!');
+				ball.vy -= 1; // move the ball up 
+				break;
+
+			// key code for right arrow
+			case 39:
+				console.log('Right arrow key pressed!');
+				ball.vx += 1;
+				break;
+			// key code for the down arrow	
+			case 40:
+				console.log('down arrow key pressed!');
+				ball.vy += 1; // move the ball down
+				break;
+			}
+			console.log("x - %d", ball.vx)
+
+		});	
+		
+		var canvasPosition = {
+			x: left = canvas.offsetLeft,
+			y: topPos = canvas.offsetTop
+		 }; // xposition and yposition for the canvas
+	  
+      canvas.addEventListener("click", function(event) { // Event handler for click - do something when clicked
+	
+		var mouse = {
+		x: event.pageX - canvasPosition.x,
+		y: event.pageY - canvasPosition.y
+		} // variable for the mouses x and y pos
+	
+		ball.x = mouse.x; 
+		ball.y = mouse.y;
+		// the ball position is set to the mouse position
+        console.log(noClicks);
+		ball.draw();
+		// draws the ball
+		
+		if(noClicks === 0){
+			repeatme();
+		}
+		
+		noClicks += 1;
+      });	  
+	
+	function repeatme() {
+		// Draw the ball (stroked, not filled).
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ball.draw();
+		ball.move();
+		// Get the animation going.
+		window.requestAnimationFrame(repeatme);
+	}
+
+	
+		
+    </script>
+
+  </body>
+
+</html>
